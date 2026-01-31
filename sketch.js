@@ -85,7 +85,9 @@ function keyPressed() {
     }
     //report measurements to console
     if (key === "r") {
-        console.log(reportFrameRateEtc().join("\n"));
+        const txt = reportFrameRateEtc().join("\n");
+        console.log(txt, "\n(copied to clipboard)");
+        navigator.clipboard.writeText(txt);
     }
 }
 
