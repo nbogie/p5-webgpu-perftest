@@ -9,6 +9,8 @@ let manyCircles;
 let useBuildGeometry;
 
 async function setup() {
+    performance.mark("sketch-setup-started");
+
     rendererUsed = WEBGPU;
     await createCanvas(windowWidth, windowHeight, rendererUsed);
 
@@ -19,6 +21,7 @@ async function setup() {
     fps = createP();
     fps.style("font-size", "3vw");
     fps.position(0, 0);
+    performance.mark("sketch-setup-finished");
 }
 
 function drawSomeCircles() {
@@ -38,7 +41,11 @@ function drawSomeCircles() {
         circle(x, y, 10);
     }
 }
+
 function draw() {
+    if (frameCount % 300 === 1) {
+        performance.mark("sketch-draw300thframe-started");
+    }
     background(200);
 
     //TODO: is it necessary to dispose of the geometry?
@@ -49,6 +56,9 @@ function draw() {
     }
 
     reportFrameRateEtc();
+    if (frameCount % 300 === 1) {
+        performance.mark("sketch-draw300thframe-finished");
+    }
 }
 
 function reportFrameRateEtc() {
@@ -76,12 +86,18 @@ function reportFrameRateEtc() {
 function keyPressed() {
     if (key === "c") {
         manyCircles = !manyCircles;
+        performance.mark(
+            "sketch-manyCircles-" + (+manyCircles ? "enabled" : "disabled"),
+        );
     }
     if (key === "p") {
         togglePause();
     }
     if (key === "g") {
         useBuildGeometry = !useBuildGeometry;
+        performance.mark(
+            "sketch-buildgeom-" + (+useBuildGeometry ? "enabled" : "disabled"),
+        );
     }
     if (key === "!") {
         useABurstOfCPU(6000);
@@ -96,7 +112,8 @@ function keyPressed() {
 
 //this can be useful for making a visible marker in the recorded trace.
 //It just keeps a CPU thread busy for durationMs.
-function useABurstOfCPU(durationMs = 2000) {
+function useABurstOfCPU(durationMs) {
+    performance.mark("sketch-cpu-burst-started");
     let sum = 0;
     let startTime = performance.now();
     while (performance.now() - startTime < durationMs) {
@@ -111,12 +128,15 @@ function useABurstOfCPU(durationMs = 2000) {
             "ms, ending " +
             new Date(),
     );
+    performance.mark("sketch-cpu-burst-finished");
 }
 
 function togglePause() {
     if (isLooping) {
         noLoop();
+        performance.mark("sketch-paused");
     } else {
         loop();
+        performance.mark("sketch-unpaused");
     }
 }
