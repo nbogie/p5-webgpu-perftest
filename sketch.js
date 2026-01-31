@@ -81,7 +81,7 @@ function keyPressed() {
         useBuildGeometry = !useBuildGeometry;
     }
     if (key === "!") {
-        useABurstOfCPU(2000);
+        useABurstOfCPU(6000);
     }
     //report measurements to console
     if (key === "r") {
