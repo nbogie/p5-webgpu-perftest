@@ -83,7 +83,7 @@ function keyPressed() {
     if (key === "!") {
         useABurstOfCPU(6000);
     }
-    //report measurements to console
+    //report measurements to console and clipboard
     if (key === "r") {
         const txt = reportFrameRateEtc().join("\n");
         console.log(txt, "\n(copied to clipboard)");
