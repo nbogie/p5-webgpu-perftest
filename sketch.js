@@ -77,6 +77,9 @@ function keyPressed() {
     if (key === "c") {
         manyCircles = !manyCircles;
     }
+    if (key === "p") {
+        togglePause();
+    }
     if (key === "g") {
         useBuildGeometry = !useBuildGeometry;
     }
@@ -108,4 +111,12 @@ function useABurstOfCPU(durationMs = 2000) {
             "ms, ending " +
             new Date(),
     );
+}
+
+function togglePause() {
+    if (isLooping) {
+        noLoop();
+    } else {
+        loop();
+    }
 }
